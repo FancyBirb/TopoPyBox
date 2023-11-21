@@ -2,18 +2,31 @@
 #include "aspect.c"
 
 void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
-    double *matrix, *result;
-    mwSize rows, cols;
+    // Überprüfen der Anzahl der Eingangs- und Ausgangsargumente
+    if (nrhs != 3) {
+        mexErrMsgIdAndTxt("MyToolbox:myCFunction:nrhs", "Three inputs required.");
+    }
+    if (nlhs != 1) {
+        mexErrMsgIdAndTxt("MyToolbox:myCFunction:nlhs", "One output required.");
+    }
 
-    // Get input matrix
-    matrix = mxGetPr(prhs[0]);
-    rows = mxGetM(prhs[0]);
-    cols = mxGetN(prhs[0]);
+    // Überprüfen, ob die Eingabeargumente die erwarteten Datentypen haben
+    if (!mxIsSingle(prhs[0]) || mxIsComplex(prhs[0]) || !mxIsScalar(prhs[1]) || !mxIsScalar(prhs[2])) {
+        mexErrMsgIdAndTxt("MyToolbox:myCFunction:invalidInput", "Invalid input types.");
+    }
 
-    // Create output matrix
-    plhs[0] = mxCreateDoubleMatrix(rows, cols, mxREAL);
-    result = mxGetPr(plhs[0]);
+    // Eingabevariablen abrufen
+    float *input = (float *)mxGetData(prhs[0]);
+    int rows = (int)mxGetScalar(prhs[1]);
+    int cols = (int)mxGetScalar(prhs[2]);
 
-    // Call the C function
-    aspect(rows, cols, matrix, result);
+    // Ausgabematrix erstellen
+    mxArray *outputMatrix = mxCreateNumericMatrix(rows, cols, mxSINGLE_CLASS, mxREAL);
+    float *output = (float *)mxGetData(outputMatrix);
+
+    // Aufruf der C-Funktion
+    aspect(input, rows, cols, output);
+
+    // Ausgabe setzen
+    plhs[0] = outputMatrix;
 }

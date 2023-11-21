@@ -32,3 +32,18 @@ gcc -fPIC -shared -o compiledName.so uncompiledFile.c
 - make
 - cmake
 - ctypes
+
+### Wie das programm in Matlab aufgerufen werden kann
+- öffne in matlab den ordner wo sich die mex_aspect.c datei befindet
+- führe folgenden befehle aus (kann auch alles kopiert werden, jedoch dann ohne ">" )
+```bash
+>mex mex_aspect.c
+>inputArray = single([1, 2, 3; 4, 5, 6]);  % Beispiel-Eingabematrix
+>rows = size(inputArray, 1);
+>cols = size(inputArray, 2);
+> %Aufruf der Funktion
+>outputArray = mex_aspect(inputArray, rows, cols);
+> %Anzeigen der Ausgabematrix
+>disp(outputArray);
+```
+- jetzt sollte hello world erscheinen und ein paar unötige nullen, weile nix berechnet wurde

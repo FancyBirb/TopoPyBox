@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-void aspect(int rows, int cols, double *input, double *output) {
+void aspect(float *input, int rows, int cols, float *output) {
     //Hier rechnen
+    printf("hello world");
     output = input;
 }
